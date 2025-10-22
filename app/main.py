@@ -1,8 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from contextlib import asynccontextmanager
+from pathlib import Path
 from app.database import db
-from app.views.user_view import router as user_router
+# from app.views.user_view import router as user_api_router
+from app.views.user_web_view import router as user_web_router  # ← NUEVO
 from app.config import settings
 
 @asynccontextmanager
@@ -11,23 +15,14 @@ async def lifespan(app: FastAPI):
     db.init_db()
     print("✅ Base de datos inicializada")
     print(f"🚀 API ejecutándose en http://{settings.host}:{settings.port}")
+    print(f"🌐 Frontend disponible en http://{settings.host}:{settings.port}/web")  # ← NUEVO
     yield
     # Shutdown
     print("👋 Cerrando aplicación")
 
 app = FastAPI(
     title="API de Gestión de Perfiles de Usuario",
-    description="""
-    API REST para gestión completa de perfiles de usuario en plataforma de reseñas.
-    
-    ## Funcionalidades principales:
-    
-    * **Crear usuario**: Registro de nuevos usuarios en la plataforma
-    * **Ver perfil**: Acceso a información personal completa
-    * **Actualizar perfil**: Modificación de datos personales
-    * **Eliminar cuenta**: Eliminación permanente de la cuenta
-    * **Desactivar cuenta**: Alternativa reversible a la eliminación
-    """,
+    description="API REST con interfaz web para gestión de perfiles",
     version="1.0.0",
     lifespan=lifespan,
     docs_url="/docs",
@@ -43,21 +38,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Montar archivos estáticos
+BASE_DIR = Path(__file__).resolve().parent.parent
+app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
+
 # Incluir rutas
-app.include_router(user_router)
+# app.include_router(user_router)
+app.include_router(user_web_router)
 
 @app.get("/", tags=["Root"])
 async def root():
     return {
         "message": "API de Gestión de Perfiles de Usuario",
         "version": "1.0.0",
-        "documentation": "/docs",
+        "api_documentation": "/docs",
+        "web_interface": "/web",  # ← NUEVO
         "endpoints": {
-            "create_user": "POST /api/users/",
-            "get_profile": "GET /api/users/{user_id}/profile",
-            "update_profile": "PUT /api/users/{user_id}/profile",
-            "delete_account": "DELETE /api/users/{user_id}/account",
-            "deactivate_account": "POST /api/users/{user_id}/deactivate"
+            "api_create_user": "POST /api/users/",
+            "api_get_profile": "GET /api/users/{user_id}/profile",
+            "api_update_profile": "PUT /api/users/{user_id}/profile",
+            "api_delete_account": "DELETE /api/users/{user_id}/account",
+            "web_interface": "GET /web",  # ← NUEVO
         }
     }
 

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Lista de Usuarios{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📋 Lista de Usuarios</h1>
+    <a href="/web/users/create" class="btn btn-success">➕ Crear Nuevo Usuario</a>
+</div>
+
+{% if deleted %}
+<div class="alert alert-success">
+    ✅ Usuario eliminado exitosamente
+</div>
+{% endif %}
+
+{% if users %}
+<div class="users-grid">
+    {% for user in users %}
+    <div class="user-card">
+        <div class="user-card-header">
+            <div class="user-avatar">{{ user.full_name[0].upper() }}</div>
+            <div class="user-info">
+                <h3>{{ user.full_name }}</h3>
+                <p class="user-email">{{ user.email }}</p>
+            </div>
+        </div>
+        
+        <div class="user-card-body">
+            {% if user.phone %}
+            <p><strong>📞 Teléfono:</strong> {{ user.phone }}</p>
+            {% endif %}
+            {% if user.location %}
+            <p><strong>📍 Ubicación:</strong> {{ user.location }}</p>
+            {% endif %}
+            {% if user.bio %}
+            <p class="user-bio">{{ user.bio[:100] }}{% if user.bio|length > 100 %}...{% endif %}</p>
+            {% endif %}
+        </div>
+        
+        <div class="user-card-footer">
+            <a href="/web/users/{{ user.id }}/profile" class="btn btn-sm btn-primary">👁️ Ver Perfil</a>
+            <a href="/web/users/{{ user.id }}/edit" class="btn btn-sm btn-info">✏️ Editar</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <p>😔 No hay usuarios registrados</p>
+    <a href="/web/users/create" class="btn btn-success">Crear el primer usuario</a>
+</div>
+{% endif %}
+{% endblock %}

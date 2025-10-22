@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Gestión de Usuarios{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>🏠 Bienvenido al Sistema de Gestión de Usuarios</h1>
+    <p>Administra perfiles de usuario de forma sencilla y eficiente</p>
+</div>
+
+<div class="cards-grid">
+    <div class="card">
+        <div class="card-icon">📋</div>
+        <h2>Ver Usuarios</h2>
+        <p>Lista completa de todos los usuarios registrados</p>
+        <a href="/web/users" class="btn btn-primary">Ver Lista</a>
+    </div>
+
+    <div class="card">
+        <div class="card-icon">➕</div>
+        <h2>Crear Usuario</h2>
+        <p>Registra un nuevo usuario en el sistema</p>
+        <a href="/web/users/create" class="btn btn-success">Crear Nuevo</a>
+    </div>
+
+    <div class="card">
+        <div class="card-icon">📚</div>
+        <h2>API Docs</h2>
+        <p>Documentación interactiva de la API REST</p>
+        <a href="/docs" class="btn btn-info">Ver Documentación</a>
+    </div>
+</div>
+
+<div class="features">
+    <h2>✨ Características</h2>
+    <ul>
+        <li>✅ Crear nuevos usuarios con validación de datos</li>
+        <li>✅ Ver perfiles completos de usuarios</li>
+        <li>✅ Actualizar información personal</li>
+        <li>✅ Eliminar cuentas de forma permanente</li>
+        <li>✅ Interfaz web intuitiva y responsive</li>
+        <li>✅ API REST completa y documentada</li>
+    </ul>
+</div>
+{% endblock %}

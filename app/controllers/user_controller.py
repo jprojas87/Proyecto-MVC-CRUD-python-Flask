@@ -123,3 +123,19 @@ class UserController:
                 result = cur.fetchone()
                 conn.commit()
                 return result
+    
+    @staticmethod
+    def get_all_users() -> list[dict]:
+        """Obtiene todos los usuarios activos"""
+        with db.get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT id, email, full_name, phone, bio, location, 
+                           is_active, created_at, updated_at 
+                    FROM users 
+                    WHERE is_active = TRUE
+                    ORDER BY created_at DESC
+                    """
+                )
+                return cur.fetchall()
