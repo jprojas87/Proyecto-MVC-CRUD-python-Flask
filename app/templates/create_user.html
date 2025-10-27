@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Crear Usuario{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>➕ Crear Nuevo Usuario</h1>
+    
+    {% if error %}
+    <div class="alert alert-error">
+        ⚠️ {{ error }}
+    </div>
+    {% endif %}
+    
+    <form method="POST" action="/web/users/create" class="user-form">
+        <div class="form-group">
+            <label for="email">Email *</label>
+            <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                value="{{ email or '' }}"
+                required 
+                placeholder="usuario@ejemplo.com">
+        </div>
+
+        <div class="form-group">
+            <label for="full_name">Nombre Completo *</label>
+            <input 
+                type="text" 
+                id="full_name" 
+                name="full_name" 
+                value="{{ full_name or '' }}"
+                required 
+                placeholder="Juan Pérez González">
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Teléfono</label>
+            <input 
+                type="tel" 
+                id="phone" 
+                name="phone" 
+                value="{{ phone or '' }}"
+                placeholder="+57 300 1234567">
+        </div>
+
+        <div class="form-group">
+            <label for="bio">Biografía</label>
+            <textarea 
+                id="bio" 
+                name="bio" 
+                rows="4" 
+                placeholder="Cuéntanos sobre ti...">{{ bio or '' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="location">Ubicación</label>
+            <input 
+                type="text" 
+                id="location" 
+                name="location" 
+                value="{{ location or '' }}"
+                placeholder="Bogotá, Colombia">
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-success">✅ Crear Usuario</button>
+            <a href="/web/users" class="btn btn-secondary">❌ Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

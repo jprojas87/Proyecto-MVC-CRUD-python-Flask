@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Perfil de {{ user.full_name }}{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>✏️ Editar Perfil</h1>
+    
+    {% if error %}
+    <div class="alert alert-error">
+        ⚠️ {{ error }}
+    </div>
+    {% endif %}
+    
+    <div class="info-box">
+        <p><strong>📧 Email:</strong> {{ user.email }}</p>
+        <p class="text-muted">El email no puede ser modificado</p>
+    </div>
+    
+    <form method="POST" action="/web/users/{{ user.id }}/edit" class="user-form">
+        <div class="form-group">
+            <label for="full_name">Nombre Completo *</label>
+            <input 
+                type="text" 
+                id="full_name" 
+                name="full_name" 
+                value="{{ user.full_name }}"
+                required 
+                placeholder="Juan Pérez González">
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Teléfono</label>
+            <input 
+                type="tel" 
+                id="phone" 
+                name="phone" 
+                value="{{ user.phone or '' }}"
+                placeholder="+57 300 1234567">
+        </div>
+
+        <div class="form-group">
+            <label for="bio">Biografía</label>
+            <textarea 
+                id="bio" 
+                name="bio" 
+                rows="4" 
+                placeholder="Cuéntanos sobre ti...">{{ user.bio or '' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="location">Ubicación</label>
+            <input 
+                type="text" 
+                id="location" 
+                name="location" 
+                value="{{ user.location or '' }}"
+                placeholder="Bogotá, Colombia">
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-success">💾 Guardar Cambios</button>
+            <a href="/web/users/{{ user.id }}/profile" class="btn btn-secondary">❌ Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
